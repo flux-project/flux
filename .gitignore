@@ -1,0 +1,8 @@
+.DS_Store
+.ipynb_checkpoints/
+metastore_db/
+target/
+derby.log
+*bag
+*bin
+dist/

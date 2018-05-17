@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  CORE_CONF_fs_defaultFS: hdfs://namenode:8020
+  CORE_CONF_hadoop_http_staticuser_user: root
+  CORE_CONF_hadoop_proxyuser_hue_groups: '*'
+  CORE_CONF_hadoop_proxyuser_hue_hosts: '*'
+  HDFS_CONF_dfs_permissions_enabled: "false"
+  HDFS_CONF_dfs_webhdfs_enabled: "true"
+  HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check: "false"
+kind: ConfigMap
+metadata:
+  name: hadoop-cm
+  namespace: {{ .Values.fluxnamespace }}
+  resourceVersion: "54222"
+  selfLink: /api/v1/namespaces/{{ .Values.fluxnamespace }}/configmaps/hadoop-cm

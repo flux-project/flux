@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+NODES=$(kubectl get nodes -o jsonpath='{.items..metadata.name}')
+NUM_NODES=$(echo "${NODES}" | tr ' ' '\n' | wc -l | xargs echo -n)
+NAMENODES=$(kubectl get node -o jsonpath='{ range .items[*] }{.metadata.name}{"\t"}{.metadata.labels.hdfs-namenode-selector}{"\n"}{end}' | cut -f 1)
+DATANODES=$(kubectl get node -o jsonpath='{ range .items[*] }{.metadata.name}{"\t"}{.metadata.labels.hdfs-datanode-selector}{"\n"}{end}' | cut -f 1)
+
+#echo "Nodes: ${NODES}"
+#echo "Namenodes: ${NAMENODES}"
+#echo "Datanodes: ${DATANODES}"
+
+# Label
+# kubectl label node docker-for-desktop hdfs-datanode-selector=hdfs-datanode
+# kubectl label node docker-for-desktop hdfs-namenode-selector=hdfs-namenode
+
+# PVC
+# helm template . --name=hdfs -x templates/flux-dn-pvc.yaml | kubectl apply -f -
+# helm template . --name=hdfs -x templates/flux-nn-pvc.yaml | kubectl apply -f -
+
+# Start
+# helm template . --name=hdfs -x templates/flux-nn-pod.yaml | kubectl apply -f -
+# helm template . --name=hdfs -x templates/flux-
+
+echo -n "--set flux.datanodes={${DATANODES}} --set flux.namenodes={${NAMENODES}}"

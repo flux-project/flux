@@ -1,0 +1,4 @@
+apiVersion: v1
+description: HDFS Helm chart for Kubernetes
+name: hdfs-flux
+version: 0.2.0
