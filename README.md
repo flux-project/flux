@@ -1,6 +1,10 @@
 # Flux Project
 
+Autodeploy a complete end-to-end machine/deep learning pipeline on Kubernetes using tools like Spark, TensorFlow, HDFS, etc. - it requires a running Kubernetes (K8s) cluster in the cloud or on-premise.
+
 Please visit the [website for updates.](http://flux-project.org/ "Flux Project")
+
+<img src="./images/flux_overview.png" width="418">
 
 ### Prerequisites
 Before installing the components make sure you have installed
@@ -85,3 +89,7 @@ Before installing the components make sure you have installed
  
  
   <img src="./images/sample_notebook.png" height="500" width="800">
+
+### Cloud deployment
+
+<img src="./images/flux_cloud.png" width="348">
