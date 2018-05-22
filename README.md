@@ -69,20 +69,19 @@ Before installing the components make sure you have installed
    ```
    <img src="./images/kube_pod.png" height="40" width="500">
    
-2. Make sure the kubernetes service is running and note the port for `flux_ros_hadoop` service
+1. Make sure the kubernetes service is running and note the port for `flux_ros_hadoop` service
 
    ```bash
    kubectl get service
-   ```
- 
+   ``
    <img src="./images/kube_service.png" height="60" width="500">
    
- 3. Open the locahost with `flux_ros_hadoop` service port in a browser and login using flux/flux
+ 1. Open the locahost with `flux_ros_hadoop` service port in a browser and login using flux/flux
  
  
  <img src="./images/login_notebook.png" height="500" width="800">
  
- 4. Access the sample notebooks
+ 1. Access the sample notebooks
  
  
   <img src="./images/sample_notebook.png" height="500" width="800">
