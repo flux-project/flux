@@ -1,5 +1,5 @@
-#FROM flux/ros_base:0.1
-FROM flux/nvidia_ros_base:0.1 
+FROM flux/ros_base:0.1
+#FROM flux/nvidia_ros_base:0.1 
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     locales bzip2 tree unzip xz-utils curl wget iproute2 sudo \
@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Jupyterhub setting
 RUN mkdir -p /etc/jupyterhub
-COPY deploy/kubernetes/ros_hadoop4k8s/jupyterhub_config.py /etc/jupyterhub/
+COPY deploy/docker/ros_hadoop4k8s/jupyterhub_config.py /etc/jupyterhub/
 
 # Introduce flux user 
 RUN npm install -g configurable-http-proxy
@@ -20,12 +20,13 @@ RUN usermod -aG sudo flux
 RUN bash -c " echo flux:flux | chpasswd "
 
 # Flux user setting 
-COPY deploy/kubernetes/ros_hadoop4k8s/spark-ex-kubernetes.sh /home/flux/
+COPY deploy/docker/ros_hadoop4k8s/spark-ex-kubernetes.sh /home/flux/
+
 
 RUN python2 -m pip install --upgrade --user pip && \
     python3 -m pip install --upgrade --user pip && \
     python3 -m pip install --no-cache-dir --upgrade jupyter jupyterhub jupyterlab && \
-    python2 -m pip install --no-cache-dir --upgrade pyspark matplotlib pandas tensorflow-gpu keras Pillow && \
+    python2 -m pip install --no-cache-dir --upgrade pyspark matplotlib pandas tensorflow keras Pillow && \
     python2 -m pip install --no-cache-dir --upgrade --force-reinstall requests imageio moviepy seaborn gmaps && \
     python2 -m pip install ipykernel && \
     python2 -m ipykernel install && \
@@ -41,6 +42,7 @@ RUN bash -c 'echo "yaml http://packages.dataspeedinc.com/ros/ros-public-'$ROS_DI
       ros-$ROS_DISTRO-dbw-mkz ros-$ROS_DISTRO-mobility-base ros-$ROS_DISTRO-baxter-sdk ros-$ROS_DISTRO-velodyne && \
     rm -rf /var/lib/apt/lists/*
 
+
 # Default to UTF-8
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
@@ -52,7 +54,7 @@ RUN mkdir -p /opt/ros_hadoop/latest
 RUN mkdir -p /opt/ros_hadoop/master/dist/
 RUN mkdir -p /opt/apache/
 RUN mkdir -p /opt/ros_spark/dist/
-COPY deploy/kubernetes/ros_hadoop4k8s/ /opt/ros_hadoop/master/
+COPY deploy/docker/ros_hadoop4k8s/ /opt/ros_hadoop/master/
 RUN bash -c "curl -s https://api.github.com/repos/valtech/ros_hadoop/releases/latest | egrep -io 'https://api.github.com/repos/valtech/ros_hadoop/tarball/[^\"]*' | xargs wget --quiet -O /opt/ros_hadoop/latest.tgz"
 RUN bash -c "if [ ! -f /opt/ros_hadoop/master/dist/hadoop-3.0.0.tar.gz ] ; then wget --quiet -O /opt/ros_hadoop/master/dist/hadoop-3.1.0.tar.gz http://www-eu.apache.org/dist/hadoop/common/hadoop-3.1.0/hadoop-3.1.0.tar.gz ; fi"
 RUN tar -xzf /opt/ros_hadoop/latest.tgz -C /opt/ros_hadoop/latest --strip-components=1 && rm /opt/ros_hadoop/latest.tgz
@@ -63,6 +65,7 @@ RUN bash -c "if [ ! -f /opt/ros_hadoop/latest/lib/rosbaginputformat.jar ] ; then
 ## for spark example tests
 RUN bash -c "if [ ! -f /opt/ros_spark/dist/spark-2.3.0-bin-hadoop2.7.tgz ] ; then wget --quiet -O /opt/ros_spark/dist/spark-2.3.0-bin-hadoop2.7.tgz http://apache.lauf-forum.at/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz ; fi"
 RUN tar -xzf /opt/ros_spark/dist/spark-2.3.0-bin-hadoop2.7.tgz -C /opt/apache && rm /opt/ros_spark/dist/spark-2.3.0-bin-hadoop2.7.tgz 
+
 
 RUN printf "<configuration>\n\n<property>\n<name>fs.defaultFS</name>\n<value>hdfs://localhost:9000</value>\n</property>\n</configuration>" > /opt/apache/hadoop/etc/hadoop/core-site.xml && \
     printf "<configuration>\n<property>\n<name>dfs.replication</name>\n<value>1</value>\n</property>\n</configuration>" > /opt/apache/hadoop/etc/hadoop/hdfs-site.xml && \

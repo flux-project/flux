@@ -14,14 +14,14 @@ Before installing the components make sure you have installed
 
 1. Build the ROS image
    ```bash
-   ./docker_build_ros.sh
+   deploy/docker/docker_build_ros.sh
    ```
 
 1. copy and install the image on all nodes or your configured docker repository
 
 1. Build the base image for Kubernetes deployment
    ```bash
-   ./docker_build.sh
+   deploy/docker/docker_build.sh
    ```
 
 1. Create the deployment and the service with Kubernetes
@@ -39,14 +39,14 @@ Before installing the components make sure you have installed
 
 1. Build the ROS image
    ```bash
-   ./docker_build_ros_gpu.sh
+   deploy/docker/docker_build_ros_gpu.sh
    ```
 
 1. copy and install the image on all nodes or your configured docker repository
 
 1. Build the base image for Kubernetes deployment
    ```bash
-   ./docker_build_gpu.sh
+   deploy/docker/docker_build_gpu.sh
    ```
 
 1. Create the deployment and the service with Kubernetes
