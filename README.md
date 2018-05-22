@@ -71,9 +71,9 @@ Before installing the components make sure you have installed
    
 1. Make sure the kubernetes service is running and note the port for `flux_ros_hadoop` service
 
-   ```bash
+   ```bash
    kubectl get service
-   ``
+   ```
    <img src="./images/kube_service.png" height="60" width="500">
    
  1. Open the locahost with `flux_ros_hadoop` service port in a browser and login using flux/flux
