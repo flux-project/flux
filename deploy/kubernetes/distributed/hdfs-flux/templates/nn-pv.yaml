@@ -10,4 +10,6 @@ spec:
   accessModes:
     - {{ .Values.persistence.namenode.accessMode | quote }}
   hostPath:
-      path: "/tmp"
+      path: {{ .Values.flux.namenode_host_path | default "/tmp/name" | quote }}
+      
+

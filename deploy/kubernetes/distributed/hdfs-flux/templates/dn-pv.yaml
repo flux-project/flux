@@ -12,5 +12,5 @@ spec:
   accessModes:
     - {{ $.Values.persistence.datanode.accessMode | quote }}
   hostPath:
-    path: "/tmp"
+    path:  {{ $.Values.flux.datanode_host_path | default "/tmp/data"  | quote }}
 {{- end}}
