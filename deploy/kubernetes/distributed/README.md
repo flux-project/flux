@@ -1,4 +1,4 @@
-# Flux Project
+# Distrbuted multi-node HDFS set up on kubernetes
 
 ### Helm package
 To package the kubernetes components with helm one needs only the helm client.
