@@ -69,5 +69,3 @@ helm install --name hdfs $(./flux) \
  --set flux.datanode_host_path="/media/disk3/k8s_host_volume/dn" \
  --set flux.namenode_host_path="/media/disk3/k8s_host_volume/nn" \ ./hdfs-flux-0.2.0.tgz
 ```
-
-Note that one should set proper permission (775) for the namenode path beforehand.  
