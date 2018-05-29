@@ -16,7 +16,7 @@ echo helm lint $(./flux) hdfs-flux/
 
 Package the helm charts as follows
 ```bash
-helm package -d dist hdfs-flux/
+helm package hdfs-flux/
 ```
 
 ### Flux namespace
