@@ -1,0 +1,13 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: namenode-volume-namenode-0
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: {{ .Values.persistence.namenode.size |quote }}
+  accessModes:
+    - {{ .Values.persistence.namenode.accessMode | quote }}
+  hostPath:
+      path: "/tmp"

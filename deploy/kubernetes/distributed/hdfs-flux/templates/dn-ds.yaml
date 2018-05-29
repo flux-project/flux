@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: datanode
+  namespace: flux
+spec:
+  ports:
+  - name: dfs
+    port: 50020
+    protocol: TCP
+  - name: datatransfer
+    port: 50010
+    protocol: TCP
+  - name: webhdfs
+    port: 50075
+  clusterIP: None
+  selector:
+    name: datanode
+    app: flux-dn
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: datanode
+  namespace: flux
+spec:
+  selector:
+    matchLabels:
+      name: datanode
+      app: flux-dn
+  serviceName: datanode
+  replicas: {{ .Values.flux.datanodes_cnt }}
+  template:
+    metadata:
+      labels:
+        name: datanode
+        app: flux-dn
+    spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: datanode
+          image: {{ .Values.image.datanode }}
+          hostname: datanode
+          ports:
+            - containerPort: 50075
+            - containerPort: 50010
+            - containerPort: 50020
+          envFrom:
+            - configMapRef:
+                name: hadoop-cm
+          volumeMounts:
+            - name: datanode-volume
+              mountPath: /hadoop/dfs/
+      nodeSelector:
+        hdfs-datanode-selector: hdfs-datanode
+  volumeClaimTemplates:
+    - metadata:
+        name: datanode-volume
+      spec:
+        accessModes: 
+          - ReadWriteOnce
+        selector: 
+          matchLabels:
+            datanode-pv-label: pvc-hdfs-dn
+

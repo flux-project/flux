@@ -1,4 +1,0 @@
-
-namespace {{ .Release.Namespace }}
-app {{ template "hdfs-flux.name" . }}
-release {{ .Release.Name }}

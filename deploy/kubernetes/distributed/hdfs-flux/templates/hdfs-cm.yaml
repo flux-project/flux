@@ -10,6 +10,5 @@ data:
 kind: ConfigMap
 metadata:
   name: hadoop-cm
-  namespace: {{ .Values.fluxnamespace }}
-  resourceVersion: "54222"
-  selfLink: /api/v1/namespaces/{{ .Values.fluxnamespace }}/configmaps/hadoop-cm
+  namespace: flux
+  

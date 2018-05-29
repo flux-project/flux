@@ -1,34 +1,37 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: namenode-1
+  name: namenode
+  namespace: flux
   labels:
-    app: flux-nn-pod
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app: flux-nn
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_"}}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  hostNetwork: true
+  hostNetwork: false
   hostPID: true
   dnsPolicy: ClusterFirstWithHostNet
   containers:
     - name: namenode
-      image: bde2020/hadoop-namenode:1.1.0-hadoop2.8-java8
+      image: {{ .Values.image.namenode }}
+      hostname: namenode
       ports:
         - containerPort: 50070
         - containerPort: 8020
       env:
         - name: CLUSTER_NAME
-          value: valtechSparkRosCluster
+          value: flux-cluster
       envFrom:
         - configMapRef:
             name: hadoop-cm
       volumeMounts:
         - name: namenode-volume
-          mountPath: /hadoop/dfs
+          mountPath: /hadoop/dfs/
   volumes:
     - name: namenode-volume
       persistentVolumeClaim:
-       claimName: flux-nn-pvc
+        claimName: namenode-volume-namenode-0
   nodeSelector:
-    hdfs-namenode-selector: hdfs-namenode
+    hdfs-namenode-selector: hdfs-namenode  
+

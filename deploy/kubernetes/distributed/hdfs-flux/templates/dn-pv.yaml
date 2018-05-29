@@ -1,0 +1,16 @@
+{{- range $i,$dn := .Values.flux.datanodes }}
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: datanode-volume-datanode-{{ $i }}
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: {{ $.Values.persistence.datanode.size |quote }}
+  accessModes:
+    - {{ $.Values.persistence.datanode.accessMode | quote }}
+  hostPath:
+    path: "/tmp"
+{{- end}}

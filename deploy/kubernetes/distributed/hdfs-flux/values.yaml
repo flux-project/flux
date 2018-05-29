@@ -1,11 +1,13 @@
 # Default values for hdfs-flux.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+
 replicaCount: 1
+
 image:
-  datanode: bde2020/hadoop-datanode:1.1.0-hadoop2.8-java8
-fluxnamespace: default
-resources: {}
+  datanode: bde2020/hadoop-datanode:1.1.0-hadoop2.8-java8 
+  namenode: bde2020/hadoop-namenode:1.1.0-hadoop2.8-java8
+
 persistence:
   datanode:
     accessMode: ReadWriteOnce
@@ -13,3 +15,4 @@ persistence:
   namenode:
     accessMode: ReadWriteOnce
     size: 10Gi
+

@@ -1,0 +1,20 @@
+{{- range $i,$dn := .Values.flux.datanodes }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datanode-volume-datanode-{{ $i }}
+  namespace: flux
+  labels:
+    datanode-pv-label: pvc-hdfs-dn
+    app: flux-dn-pvc
+    chart: {{ $.Chart.Name }}-{{ $.Chart.Version | replace "+" "_"}}
+    release: {{ $.Release.Name }}
+    heritage: {{ $.Release.Service }}
+spec:
+  accessModes:
+    - {{ $.Values.persistence.datanode.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ $.Values.persistence.datanode.size |quote }}
+{{- end }}
