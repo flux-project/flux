@@ -14,6 +14,7 @@ spec:
   dnsPolicy: ClusterFirstWithHostNet
   containers:
     - name: namenode
+      replicas: 1
       image: {{ .Values.image.namenode }}
       hostname: namenode
       ports:

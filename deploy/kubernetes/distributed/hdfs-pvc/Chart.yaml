@@ -1,0 +1,9 @@
+apiVersion: v1
+appVersion: "1.0"
+description: HDFS Helm chart for Kubernetes
+name: hdfs-pvc
+version: 0.2.0
+home: https://github.com/flux-project/
+sources:
+  - https://github.com/flux-project/
+icon: http://hadoop.apache.org/images/hadoop-logo.jpg

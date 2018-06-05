@@ -1,0 +1,9 @@
+apiVersion: v1
+appVersion: "1.0"
+description: HDFS PV Helm chart for Kubernetes
+name: hdfs-pv
+version: 0.2.0
+home: https://github.com/flux-project/flux
+sources:
+  - https://github.com/flux-project/flux
+icon: http://hadoop.apache.org/images/hadoop-logo.jpg
