@@ -1,0 +1,12 @@
+sudo: required
+
+language: python
+
+services:
+  - docker
+
+script:
+  - ./deploy/docker/docker_build_ros.sh
+  - ./deploy/docker/docker_build_ros_gpu.sh
+  - ./deploy/docker/docker_build.sh
+  - ./deploy/docker/docker_build_gpu.sh
