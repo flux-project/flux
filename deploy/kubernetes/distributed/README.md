@@ -66,7 +66,7 @@ helm delete --purge hdfs
 
 Delete the hdfs PersistenceVolumeClaim
 ```bash
-helm delete --purge hdfs-pv
+helm delete --purge hdfs-pvc
 ```
 
 Delete the hdfs	PersistenceVolume
