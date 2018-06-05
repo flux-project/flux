@@ -9,13 +9,15 @@ Note: On a cluster using Ubuntu OS run the following
 kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
 ```
 
-Lint the helm package
+Lint the helm packages
 ```bash
-echo helm lint $(./flux) hdfs-flux/
+helm lint $(./flux) hdfs-pvc/
+helm lint $(./flux) hdfs-flux/
 ```
 
 Package the helm charts as follows
 ```bash
+helm package hdfs-pvc/
 helm package hdfs-flux/
 ```
 
@@ -38,7 +40,17 @@ kubectl label no <your node name here> hdfs-datanode-selector=hdfs-datanode
 # ...
 ```
 
+NOTE: If you need to specify persistence volume manually, install the `hdfs-pv` helm package. (By default namenode and datanode will use `/tmp/name` and `/tmp/data` on host machines. You can customize the path as specified in the below `install` command.)
+
 ```bash
+helm lint $(./flux) hdfs-pv/
+helm package hdfs-pv/
+helm install --name hdfs-pv $(./flux) --set flux.datanode_host_path="/path/to/storage/dn" --set flux.namenode_host_path="/path/to/storage/nn" hdfs-pv-0.2.0.tgz
+```
+
+Install the helm packages
+```bash
+helm install --name=hdfs-pvc $(./flux) hdfs-pvc-0.2.0.tgz
 helm install --name=hdfs $(./flux) ./hdfs-flux-0.2.0.tgz
 ```
 
@@ -47,25 +59,17 @@ Connect to a datanode and create the HDFS directories
 kubectl exec -it -n flux datanode-0 -- hdfs dfs -mkdir -p /user/flux
 ```
 
-Deleting the setup
+Delete the hdfs pods and services
 ```bash
 helm del --purge hdfs
 ```
 
-### Setting details
-
-#### Volume mount for namenode and datanodes
-
-Currently hdfs-flux supports host path volume mount
-
-By default namenode and datanode will use '/tmp/name' and '/tmp/data' on host machines.
-
-You can configure the host paths by setting `flux.namenode_host_path` and  `flux.datanode_host_path` parameters.
-
-Refer to following example.
-
+Delete the hdfs PersistenceVolumeClaim
 ```bash
-helm install --name hdfs $(./flux) \
- --set flux.datanode_host_path="/media/disk3/k8s_host_volume/dn" \
- --set flux.namenode_host_path="/media/disk3/k8s_host_volume/nn" \ ./hdfs-flux-0.2.0.tgz
+helm delete --purge hdfs-pv
+```
+
+Delete the hdfs	PersistenceVolume
+```bash
+helm delete --purge hdfs-pv
 ```
