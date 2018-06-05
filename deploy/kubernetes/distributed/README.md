@@ -61,7 +61,7 @@ kubectl exec -it -n flux datanode-0 -- hdfs dfs -mkdir -p /user/flux
 
 Delete the hdfs pods and services
 ```bash
-helm del --purge hdfs
+helm delete --purge hdfs
 ```
 
 Delete the hdfs PersistenceVolumeClaim
