@@ -2,11 +2,31 @@ sudo: required
 
 language: python
 
+env:
+  - CHANGE_MINIKUBE_NONE_USER=true
+
 services:
   - docker
+
+before_script:
+  # install minikube
+  - curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.9.0/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+  - curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.25.2/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+  - minikube config set WantReportErrorPrompt false
+  - sudo minikube start --vm-driver=none --kubernetes-version=v1.9.0
+  - minikube update-context
+  - JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get nodes -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
+  - kubectl cluster-info 
 
 script:
   - ./deploy/docker/docker_build_ros.sh
   - ./deploy/docker/docker_build_ros_gpu.sh
   - ./deploy/docker/docker_build.sh
   - ./deploy/docker/docker_build_gpu.sh
+  - kubectl create -f deploy/kubernetes/flux-ros-hadoop-deployment.yml
+  - kubectl create -f deploy/kubernetes/flux-ros-hadoop-service.yml
+  - sleep 10 # TODO: avoid sleep
+  - kubectl get all --all-namespaces
+  - kubectl get pod
+  - kubectl get service
+  # TODO: execute all notebooks

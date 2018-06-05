@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/flux-project/flux.svg?branch=master)](https://travis-ci.org/flux-project/flux)
+
 # Flux Project
 
 Autodeploy a complete end-to-end machine/deep learning pipeline on Kubernetes using tools like Spark, TensorFlow, HDFS, etc. - it requires a running Kubernetes (K8s) cluster in the cloud or on-premise.
