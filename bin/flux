@@ -1,0 +1,84 @@
+#!/bin/bash
+
+# Usage
+# =====
+#
+# flux build 
+# flux start - determine cloud vendor / OS and start 
+# flux stop - stops
+# flux purge - delete everything
+# flux notebook - open browser on notebook start page
+# flux ps - list all processes
+# flux stats - print resource utilization
+#
+# Later:
+# flux scale / add-host / add-node
+# flux update
+
+function checkRequirements {
+  # TODO: error messages
+  which docker &>/dev/null
+  which kubectl &>/dev/null
+  which helm &>/dev/null
+}
+
+function displayUsage {
+  grep '^#' $0 | sed 's/^# *//'
+}
+
+function checkForGPU {
+  true # TODO [ -n `docker volume ls -q -f driver=nvidia-docker` ]
+}
+
+hasGPU=$(checkForGPU)
+
+set -e
+checkRequirements
+
+if [ $# -lt 1 ]
+then
+  displayUsage
+  exit 1
+fi
+command=$1
+
+case "$command" in
+  "build")
+    GPU=${hasGPU} || echo '-_gpu'
+
+    echo "suffix: ${GPU}"
+
+    ./deploy/docker/docker_build_ros${GPU}.sh
+    ./deploy/docker/docker_build${GPU}.sh
+    ;;
+  "start")
+    kubectl create -f deploy/kubernetes/flux-ros-hadoop-deployment.yml
+    kubectl create -f deploy/kubernetes/flux-ros-hadoop-service.yml
+    ;;
+    # TODO: poll and block until it is really started?
+  "purge")
+    kubectl delete -f deploy/kubernetes/flux-ros-hadoop-deployment.yml
+    kubectl delete -f deploy/kubernetes/flux-ros-hadoop-service.yml
+    ;;
+  "stop")
+    helm delete --purge hdfs
+    ;;
+  "ps")
+    kubectl get all --all-namespaces
+    ;;
+  "stats")
+    echo "TODO: implement me"
+    exit 1
+    ;;
+  "notebook")
+    #PORT=
+    open "http://localhost:$(kubectl get service flux-ros-hadoop --template='{{(index .spec.ports 0).nodePort}}')"
+    ;;
+
+  # TODO: need flux init?
+  # TODO: need flux check to check if everything is running
+  *)
+    displayUsage
+    exit 1
+    ;;
+esac

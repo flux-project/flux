@@ -19,14 +19,12 @@ before_script:
   - kubectl cluster-info 
 
 script:
-  - ./deploy/docker/docker_build_ros.sh
-  - ./deploy/docker/docker_build_ros_gpu.sh
-  - ./deploy/docker/docker_build.sh
-  - ./deploy/docker/docker_build_gpu.sh
-  - kubectl create -f deploy/kubernetes/flux-ros-hadoop-deployment.yml
-  - kubectl create -f deploy/kubernetes/flux-ros-hadoop-service.yml
+  - ./bin/flux build
+  # - ./deploy/docker/docker_build_ros_gpu.sh
+  # - ./deploy/docker/docker_build_gpu.sh
+  - ./bin/flux start
   - sleep 10 # TODO: avoid sleep
-  - kubectl get all --all-namespaces
-  - kubectl get pod
-  - kubectl get service
+  - ./bin/flux ps
   # TODO: execute all notebooks
+  - ./bin/flux stop
+  - ./bin/flux purge

@@ -4,5 +4,4 @@ metastore_db/
 target/
 derby.log
 *bag
-*bin
 dist/
