@@ -26,7 +26,7 @@ spec:
         run: flux-ros-hadoop-gpu
     spec:
       containers:
-      - image: flux/ros_hadoop_gpu4k8s:0.1
+      - image: fluxproject/examples_gpu
         imagePullPolicy: IfNotPresent
         name: flux-ros-hadoop-gpu
         ports:

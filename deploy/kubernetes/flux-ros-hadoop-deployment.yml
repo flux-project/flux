@@ -26,7 +26,7 @@ spec:
         run: flux-ros-hadoop
     spec:
       containers:
-      - image: flux/ros_hadoop_k8s:0.1
+      - image: fluxproject/examples
         imagePullPolicy: IfNotPresent
         name: flux-ros-hadoop
         ports:

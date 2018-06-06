@@ -7,6 +7,7 @@
 # flux start - determine cloud vendor / OS and start 
 # flux stop - stops
 # flux purge - delete everything
+# flux pull - pulls latest version
 # flux notebook - open browser on notebook start page
 # flux ps - list all processes
 # flux stats - print resource utilization
@@ -50,6 +51,7 @@ case "$command" in
 
     ./deploy/docker/docker_build_ros${GPU}.sh
     ./deploy/docker/docker_build${GPU}.sh
+    docker build -t fluxproject/examples${GPU} .
     ;;
   "start")
     kubectl create -f deploy/kubernetes/flux-ros-hadoop-deployment.yml
@@ -73,6 +75,10 @@ case "$command" in
   "notebook")
     #PORT=
     open "http://localhost:$(kubectl get service flux-ros-hadoop --template='{{(index .spec.ports 0).nodePort}}')"
+    ;;
+  "pull")
+    docker pull fluxproject/flux:latest
+    docker pull fluxproject/examples:latest
     ;;
 
   # TODO: need flux init?
