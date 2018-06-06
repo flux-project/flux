@@ -1,1 +1,1 @@
-docker build -t flux/nvidia_ros_base:0.1 -f deploy/docker/ros_base/Dockerfile-gpu . 
+docker build -t fluxproject/ros_base_gpu -f Dockerfile-gpu deploy/docker/ros_base 
