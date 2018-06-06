@@ -1,0 +1,4 @@
+#!/bin/bash
+POD=$(kubectl get pods --output='go-template={{(index .items 0).metadata.name}}')
+
+kubectl exec -ti ${POD} -- jupyter nbconvert --execute $1
