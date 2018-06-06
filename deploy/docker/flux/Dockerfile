@@ -53,11 +53,15 @@ RUN mkdir -p /opt/apache/
 RUN mkdir -p /opt/ros_spark/dist/
 COPY . /opt/ros_hadoop/master/
 
-ENV ROS_HADOOP='0.9.11'
+# TODO: ENV ROS_HADOOP='0.9.11'
+# RUN \
+#   curl -s "https://codeload.github.com/valtech/ros_hadoop/tar.gz/v${ROS_HADOOP}" | \
+#   tar -C /opt/ros_hadoop -xvzf - && \
+#   mv /opt/ros_hadoop/ros_hadoop-${ROS_HADOOP} /opt/ros_hadoop/latest
 RUN \
-  curl -s "https://codeload.github.com/valtech/ros_hadoop/tar.gz/v${ROS_HADOOP}" | \
+  curl -s "https://codeload.github.com/valtech/ros_hadoop/tar.gz/master" | \
   tar -C /opt/ros_hadoop -xvzf - && \
-  mv /opt/ros_hadoop/ros_hadoop-${ROS_HADOOP} /opt/ros_hadoop/latest
+  mv /opt/ros_hadoop/ros_hadoop-master /opt/ros_hadoop/latest
 
 RUN bash -c "if [ ! -f /opt/ros_hadoop/master/dist/hadoop-3.0.0.tar.gz ] ; then wget --quiet -O /opt/ros_hadoop/master/dist/hadoop-3.1.0.tar.gz http://www.eu.apache.org/dist/hadoop/common/hadoop-3.1.0/hadoop-3.1.0.tar.gz ; fi"
 RUN tar -xzf /opt/ros_hadoop/master/dist/hadoop-3.1.0.tar.gz -C /opt/apache && rm /opt/ros_hadoop/master/dist/hadoop-3.1.0.tar.gz
