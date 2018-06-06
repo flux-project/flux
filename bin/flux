@@ -59,11 +59,11 @@ case "$command" in
     ;;
     # TODO: poll and block until it is really started?
   "purge")
-    kubectl delete -f deploy/kubernetes/flux-ros-hadoop-deployment.yml
     kubectl delete -f deploy/kubernetes/flux-ros-hadoop-service.yml
+    kubectl delete -f deploy/kubernetes/flux-ros-hadoop-deployment.yml
     ;;
   "stop")
-    helm delete --purge hdfs
+    # TODO: wait for helm install helm delete --purge hdfs
     ;;
   "ps")
     kubectl get all --all-namespaces
