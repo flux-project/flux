@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/flux-project/flux.svg?branch=master)](https://travis-ci.org/flux-project/flux)
+[![Docker Automation](https://img.shields.io/docker/automated/fluxproject/flux.svg)](https://hub.docker.com/r/fluxproject/flux/)
+[![Docker Build Status](https://img.shields.io/docker/build/fluxproject/flux.svg)](https://hub.docker.com/r/fluxproject/flux/)
 
 # Flux Project
 
