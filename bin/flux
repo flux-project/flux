@@ -21,7 +21,7 @@ function require {
 }
 
 function displayUsage {
-  grep '^#' $0 | sed 's/^# *//'
+  grep '^#' $0 | grep -v '#!' | sed 's/^# *//'
 }
 
 function checkForGPU {
@@ -36,11 +36,7 @@ require 'docker'
 require 'kubectl'
 require 'helm'
 
-if [ $# -lt 1 ]
-then
-  displayUsage
-  exit 1
-fi
+
 command=$1
 
 case "$command" in
