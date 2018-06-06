@@ -16,11 +16,8 @@
 # flux scale / add-host / add-node
 # flux update
 
-function checkRequirements {
-  # TODO: error messages
-  which docker &>/dev/null
-  which kubectl &>/dev/null
-  which helm &>/dev/null
+function require {
+  which $1 &>/dev/null || { echo "$1 is not installed, but required!"; exit 1; }
 }
 
 function displayUsage {
@@ -33,8 +30,11 @@ function checkForGPU {
 
 hasGPU=$(checkForGPU)
 
-set -e
-checkRequirements
+set -eo pipefail
+
+require 'docker'
+require 'kubectl'
+require 'helm'
 
 if [ $# -lt 1 ]
 then
