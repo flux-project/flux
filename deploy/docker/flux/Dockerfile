@@ -48,18 +48,18 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 ENV PATH $PATH:/opt/apache/hadoop/bin
 ENV ROSIF_JAR /opt/ros_hadoop/master/lib/rosbaginputformat.jar
 
-RUN mkdir -p /opt/ros_hadoop/latest
 RUN mkdir -p /opt/ros_hadoop/master/dist/
 RUN mkdir -p /opt/apache/
 RUN mkdir -p /opt/ros_spark/dist/
 COPY . /opt/ros_hadoop/master/
 
-ENV ROS_HADOOP='v0.9.11'
-ADD "https://github.com/valtech/ros_hadoop/archive/${ROS_HADOOP}.tar.gz" /opt/ros_hadoop/latest
+ENV ROS_HADOOP='0.9.11'
+RUN \
+  curl -s "https://codeload.github.com/valtech/ros_hadoop/tar.gz/v${ROS_HADOOP}" | \
+  tar -C /opt/ros_hadoop -xvzf - && \
+  mv /opt/ros_hadoop/ros_hadoop-${ROS_HADOOP} /opt/ros_hadoop/latest
 
-# RUN bash -c "curl -s https://api.github.com/repos/valtech/ros_hadoop/releases/latest | egrep -io 'https://api.github.com/repos/valtech/ros_hadoop/tarball/[^\"]*' | xargs wget --quiet -O /opt/ros_hadoop/latest.tgz"
 RUN bash -c "if [ ! -f /opt/ros_hadoop/master/dist/hadoop-3.0.0.tar.gz ] ; then wget --quiet -O /opt/ros_hadoop/master/dist/hadoop-3.1.0.tar.gz http://www.eu.apache.org/dist/hadoop/common/hadoop-3.1.0/hadoop-3.1.0.tar.gz ; fi"
-# RUN tar -xzf /opt/ros_hadoop/latest.tgz -C /opt/ros_hadoop/latest --strip-components=1 && rm /opt/ros_hadoop/latest.tgz
 RUN tar -xzf /opt/ros_hadoop/master/dist/hadoop-3.1.0.tar.gz -C /opt/apache && rm /opt/ros_hadoop/master/dist/hadoop-3.1.0.tar.gz
 RUN ln -s /opt/apache/hadoop-3.1.0 /opt/apache/hadoop 
 RUN bash -c "if [ ! -f /opt/ros_hadoop/latest/lib/rosbaginputformat.jar ] ; then ln -s /opt/ros_hadoop/master/lib/rosbaginputformat.jar /opt/ros_hadoop/latest/lib/rosbaginputformat.jar ; fi"
@@ -67,7 +67,6 @@ RUN bash -c "if [ ! -f /opt/ros_hadoop/latest/lib/rosbaginputformat.jar ] ; then
 ## for spark example tests
 RUN bash -c "if [ ! -f /opt/ros_spark/dist/spark-2.3.0-bin-hadoop2.7.tgz ] ; then wget --quiet -O /opt/ros_spark/dist/spark-2.3.0-bin-hadoop2.7.tgz http://apache.lauf-forum.at/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz ; fi"
 RUN tar -xzf /opt/ros_spark/dist/spark-2.3.0-bin-hadoop2.7.tgz -C /opt/apache && rm /opt/ros_spark/dist/spark-2.3.0-bin-hadoop2.7.tgz 
-
 
 RUN printf "<configuration>\n\n<property>\n<name>fs.defaultFS</name>\n<value>hdfs://localhost:9000</value>\n</property>\n</configuration>" > /opt/apache/hadoop/etc/hadoop/core-site.xml && \
     printf "<configuration>\n<property>\n<name>dfs.replication</name>\n<value>1</value>\n</property>\n</configuration>" > /opt/apache/hadoop/etc/hadoop/hdfs-site.xml && \
