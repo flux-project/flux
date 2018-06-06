@@ -40,7 +40,13 @@ Before installing the components make sure you have installed
 
 ```bash
 ./bin/flux notebook
-``` 
+```
+A browser window opens. You can there login using `flux/flux`.
+
+<img src="./images/login_notebook.png" height="500" width="800">
+
+After Login an ipython notebook playground with examples will open.
+
 <img src="./images/sample_notebook.png" height="500" width="800">
 
 ### Cloud deployment
