@@ -28,7 +28,7 @@ spec:
             name: hadoop-cm
       volumeMounts:
         - name: namenode-volume
-          mountPath: /hadoop/dfs/name
+          mountPath: /hadoop/dfs
   volumes:
     - name: namenode-volume
       persistentVolumeClaim:

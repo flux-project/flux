@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  datanode: fluxproject/hdfs-dn-4k8s:0.1
-  namenode: fluxproject/hdfs-nn-4k8s:0.1
+  datanode: bde2020/hadoop-datanode:1.1.0-hadoop2.8-java8
+  namenode: bde2020/hadoop-namenode:1.1.0-hadoop2.8-java8
 
 persistence:
   datanode:

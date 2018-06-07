@@ -51,7 +51,7 @@ spec:
                 name: hadoop-cm
           volumeMounts:
             - name: datanode-volume
-              mountPath: /hadoop/dfs/data
+              mountPath: /hadoop/dfs
       nodeSelector:
         hdfs-datanode-selector: hdfs-datanode
   volumeClaimTemplates:
