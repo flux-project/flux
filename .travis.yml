@@ -30,5 +30,6 @@ script:
   - sleep 10 # TODO: avoid sleep
   - ./bin/flux ps
   # TODO: activate once working - (cd examples && find . -name '*.ipynb') | xargs ./bin/test_example
+  -  xargs ./bin/test_example Tutorial.ipynb
   - ./bin/flux stop
   - ./bin/flux purge
