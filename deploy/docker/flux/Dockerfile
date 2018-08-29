@@ -63,14 +63,14 @@ RUN \
   tar -C /opt/ros_hadoop -xvzf - && \
   mv /opt/ros_hadoop/ros_hadoop-master /opt/ros_hadoop/latest
 
-RUN bash -c "if [ ! -f /opt/ros_hadoop/master/dist/hadoop-3.0.0.tar.gz ] ; then wget --quiet -O /opt/ros_hadoop/master/dist/hadoop-3.1.0.tar.gz http://www.eu.apache.org/dist/hadoop/common/hadoop-3.1.0/hadoop-3.1.0.tar.gz ; fi"
-RUN tar -xzf /opt/ros_hadoop/master/dist/hadoop-3.1.0.tar.gz -C /opt/apache && rm /opt/ros_hadoop/master/dist/hadoop-3.1.0.tar.gz
-RUN ln -s /opt/apache/hadoop-3.1.0 /opt/apache/hadoop 
+RUN bash -c "if [ ! -f /opt/ros_hadoop/master/dist/hadoop-3.0.0.tar.gz ] ; then wget --no-check-certificate -O /opt/ros_hadoop/master/dist/hadoop-3.1.1.tar.gz -q https://www.eu.apache.org/dist/hadoop/common/hadoop-3.1.1/hadoop-3.1.1.tar.gz ; fi"
+RUN tar -xzf /opt/ros_hadoop/master/dist/hadoop-3.1.1.tar.gz -C /opt/apache && rm /opt/ros_hadoop/master/dist/hadoop-3.1.1.tar.gz
+RUN ln -s /opt/apache/hadoop-3.1.1 /opt/apache/hadoop 
 RUN bash -c "if [ ! -f /opt/ros_hadoop/latest/lib/rosbaginputformat.jar ] ; then ln -s /opt/ros_hadoop/master/lib/rosbaginputformat.jar /opt/ros_hadoop/latest/lib/rosbaginputformat.jar ; fi"
 
 ## for spark example tests
-RUN bash -c "if [ ! -f /opt/ros_spark/dist/spark-2.3.0-bin-hadoop2.7.tgz ] ; then wget --quiet -O /opt/ros_spark/dist/spark-2.3.0-bin-hadoop2.7.tgz http://apache.lauf-forum.at/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz ; fi"
-RUN tar -xzf /opt/ros_spark/dist/spark-2.3.0-bin-hadoop2.7.tgz -C /opt/apache && rm /opt/ros_spark/dist/spark-2.3.0-bin-hadoop2.7.tgz 
+RUN bash -c "if [ ! -f /opt/ros_spark/dist/spark-2.3.1-bin-hadoop2.7.tgz ] ; then wget --quiet -O /opt/ros_spark/dist/spark-2.3.1-bin-hadoop2.7.tgz http://apache.lauf-forum.at/spark/spark-2.3.1/spark-2.3.1-bin-hadoop2.7.tgz ; fi"
+RUN tar -xzf /opt/ros_spark/dist/spark-2.3.1-bin-hadoop2.7.tgz -C /opt/apache && rm /opt/ros_spark/dist/spark-2.3.1-bin-hadoop2.7.tgz 
 
 RUN printf "<configuration>\n\n<property>\n<name>fs.defaultFS</name>\n<value>hdfs://localhost:9000</value>\n</property>\n</configuration>" > /opt/apache/hadoop/etc/hadoop/core-site.xml && \
     printf "<configuration>\n<property>\n<name>dfs.replication</name>\n<value>1</value>\n</property>\n</configuration>" > /opt/apache/hadoop/etc/hadoop/hdfs-site.xml && \
