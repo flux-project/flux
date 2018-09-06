@@ -1,1 +1,1 @@
-docker build -t fluxproject/flux_gpu -f Dockerfile-gpu deploy/docker/flux
+docker build -t fluxproject/flux_gpu -f deploy/docker/flux/Dockerfile-gpu deploy/docker/flux
